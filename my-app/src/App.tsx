@@ -23,7 +23,7 @@ function App() {
           <Route path="register" element={<RegisterPage/>}/>
           {/*Підключаємо роутинг на сторінку додавання продукту*/}
           <Route path="add_product" element={<AddProductPage/>}/>
-          <Route path="edit_product" element={<EditProductPage/>}/>
+          <Route path="edit/:id" element={<EditProductPage/>}/>
         </Route>
       </Routes>
     </>

@@ -36,11 +36,4 @@ export interface IAddProduct {
     detail?: string;
 }
 
-export interface IUpdateProduct {
-    id?: number,
-    name?: string,
-    detail?: string;
-}
-
-
 export type ProductActions = | GetProductAction

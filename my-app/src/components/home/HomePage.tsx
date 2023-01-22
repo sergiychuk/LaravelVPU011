@@ -9,7 +9,6 @@ import {
   IProductResponse,
   IProductSearch,
   IProductState,
-  IUpdateProduct,
   ProductActionTypes,
 } from "./types";
 
@@ -76,13 +75,13 @@ const HomePage = () => {
     });
   }
 
-  const editProduct = (values: IUpdateProduct) => {
-    // console.log(id);
-    http.put("/api/products/", values).then(resp => {
-      // console.log(resp);
+  // const editProduct = (values: IUpdateProduct) => {
+  //   // console.log(id);
+  //   http.put("/api/products/", values).then(resp => {
+  //     // console.log(resp);
 
-    });
-  }
+  //   });
+  // }
 
   const data = list.map((product) => (
     <tr key={product.id}>
