@@ -31,4 +31,10 @@ export interface GetProductAction {
     payload: IProductState
 }
 
+export interface IAddProduct {
+    name?: string,
+    detail?: string;
+}
+
+
 export type ProductActions = | GetProductAction
