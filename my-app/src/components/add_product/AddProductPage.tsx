@@ -2,6 +2,7 @@
 // import http from "../../http_common";
 import { useFormik } from "formik";
 import { useState } from "react";
+import { useNavigate, useNavigation } from "react-router-dom";
 import http from "../../http_common";
 import { IAddProduct } from "../home/types";
 
@@ -12,11 +13,13 @@ const AddProductPage = () => {
         detail: "",
     });
 
+    const navigator = useNavigate();
+
     const onSubmit = (values: IAddProduct) => {
         // console.log(values);
         http.post("/api/products", values).then(resp => {
             // console.log(resp);
-            
+            navigator("/");
         });
     };
 

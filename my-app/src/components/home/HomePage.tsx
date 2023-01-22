@@ -9,6 +9,7 @@ import {
   IProductResponse,
   IProductSearch,
   IProductState,
+  IUpdateProduct,
   ProductActionTypes,
 } from "./types";
 
@@ -20,10 +21,10 @@ const HomePage = () => {
 
   const [search, setSearch] = useState<IProductSearch>({
     page: 1
-  })  
+  })
 
   useEffect(() => {
-    http.get<IProductResponse>("/api/products?page="+search.page).then((resp) => {
+    http.get<IProductResponse>("/api/products?page=" + search.page).then((resp) => {
       const action: GetProductAction = {
         type: ProductActionTypes.GET_PRODUCTS,
         payload: {
@@ -41,25 +42,57 @@ const HomePage = () => {
   for (let i = 1; i <= count_page; i++) {
     buttons.push(i);
   }
-const pagination = buttons.map(page => {
-  return (
-    <li key={page} className="page-item">
-      <Link
-        to={"?page=" + page}
-        className={classNames("page-link", { active: page === current_page })}
-        onClick={()=>{setSearch({...search, page})}}
-      >
-        {page}
-      </Link>
-    </li>
-  );
-});
+  const pagination = buttons.map(page => {
+    return (
+      <li key={page} className="page-item">
+        <Link
+          to={"?page=" + page}
+          className={classNames("page-link", { active: page === current_page })}
+          onClick={() => { setSearch({ ...search, page }) }}
+        >
+          {page}
+        </Link>
+      </li>
+    );
+  });
+
+
+  const deleteProduct = (id: number) => {
+    // console.log(id);
+    http.delete("/api/products/" + id).then(resp => {
+      // console.log(resp);
+      http.get<IProductResponse>("/api/products?page=" + search.page).then((resp) => {
+        const action: GetProductAction = {
+          type: ProductActionTypes.GET_PRODUCTS,
+          payload: {
+            list: resp.data.data,
+            count_page: resp.data.last_page,
+            current_page: resp.data.current_page,
+            total: resp.data.total,
+          },
+        };
+        dispatch(action);
+      });
+    });
+  }
+
+  const editProduct = (values: IUpdateProduct) => {
+    // console.log(id);
+    http.put("/api/products/", values).then(resp => {
+      // console.log(resp);
+
+    });
+  }
 
   const data = list.map((product) => (
     <tr key={product.id}>
       <td>{product.id}</td>
       <td>{product.name}</td>
       <td>{product.detail}</td>
+      <span>
+        <button className="btn btn-warning">Edit</button>
+        <button onClick={() => deleteProduct(product.id)} className="btn btn-secondary">Delete</button>
+      </span>
     </tr>
   ));
 

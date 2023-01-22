@@ -13,6 +13,9 @@ h1 {
   padding: 5px 0px 10px 0px;
   background-color: rgb(102, 102, 102);
 }
+.btn.btn-secondary{
+  background-color: none;
+}
 
 /* li>.nav-link.active {
   background-color: rgb(53, 30, 30);

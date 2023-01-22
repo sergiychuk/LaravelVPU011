@@ -8,6 +8,7 @@ import LoginPage from './components/auth/login';
 import RegisterPage from './components/auth/register';
 import DefaultLayout from './components/containers/default';
 import AddProductPage from './components/add_product';
+import EditProductPage from './components/edit_product';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="register" element={<RegisterPage/>}/>
           {/*Підключаємо роутинг на сторінку додавання продукту*/}
           <Route path="add_product" element={<AddProductPage/>}/>
+          <Route path="edit_product" element={<EditProductPage/>}/>
         </Route>
       </Routes>
     </>

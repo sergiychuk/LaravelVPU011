@@ -137,25 +137,113 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put (
+     ** path="/api/products",
+     *   tags={"Product"},
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Create product info",
+     *    @OA\JsonContent(
+     *       required={"id","name","detail"},
+     *       @OA\Property(property="id", type="integer"),
+     *       @OA\Property(property="name", type="string"),
+     *       @OA\Property(property="detail", type="string"),
+     *    ),
+     * ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *)
+     **/
+    public function update(Request $request)
     {
-        //
+        $input = $request->all();
+        $id = $input['id'] ?? 0;
+        $product = Product::find($id);
+        if (is_null($product)) {
+            return response()->json([
+                "success" => false
+            ], 404);
+        }
+        $validator = Validator::make($input, [
+            'name' => 'required',
+            'detail' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "Validation Error" => $validator->errors()
+            ], 404);
+        }
+        $product->name = $input['name'];
+        $product->detail = $input['detail'];
+        $product->save();
+        return response()->json([
+            "success" => true,
+            "message" => "Product updated successfully.",
+            "data" => $product
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete  (
+     ** path="/api/products/{id}",
+     *   tags={"Product"},
      *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
+     *  @OA\Parameter(
+     *      name="id",
+     *      in="path",
+     *      description="Buscar por estado",
+     *      required=true,
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="not found"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *)
+     **/
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        if (is_null($product)) {
+            return $this->sendError('Product not found.');
+        }
+        $product->delete();
+        return response()->json([
+            "success" => true,
+            "message" => "Product deleted successfully.",
+            "data" => $product
+        ]);
     }
 }
