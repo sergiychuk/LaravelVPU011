@@ -18,10 +18,10 @@ const EditProductPage = () => {
     const navigator = useNavigate();
 
     const onSubmit = (values: IUpdateProduct) => {
-        // console.log(values);
+        console.log(values);
         http.put("/api/products", values).then(resp => {
-            // console.log(resp);
-            navigator("/");
+            console.log(resp);
+            // navigator("/");
         });
     };
 
@@ -31,34 +31,40 @@ const EditProductPage = () => {
     });
 
     useEffect(() => {
-        http.get("/api/products" + params.id).then(resp => {
+        http.get("/api/products/" + params.id).then(resp => {
             //setProduct
-            // console.log(resp);
-            http.get("/api/products/" + params.id).then(resp => {
-                console.log(resp);
+            // console.log(formik.values.detail);
 
-            });
+            update.id = resp.data.data.id;
+            update.name = resp.data.data.name;
+            update.detail = resp.data.data.detail;
+            // console.log(update);
+            console.log(formik);
         });
     }, []);
     // console.log("params:", params);
 
+    const divName = (
+        <div className="input-group">
+            <div className="input-group-prepend">
+                <span className="input-group-text">Name</span>
+            </div>
+            <input type="text" id="name" name="name" value={formik.values.name} onChange={formik.handleChange} className="form-control" aria-label="With textarea" />
+        </div>
+    )
+
     return (
         <>
             <h1>Редагування продукту</h1>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="input-group">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text">Name</span>
-                    </div>
-                    <input type="text" id="name" name="name" value={formik.values.name} onChange={formik.handleChange} className="form-control" aria-label="With textarea" />
-                </div>
+            <form onSubmit={formik.handleSubmit} onLoad={formik.handleChange}>
+                {divName}
                 <div className="input-group">
                     <div className="input-group-prepend">
                         <span className="input-group-text">Detail</span>
                     </div>
                     <input type="text" id="detail" name="detail" value={formik.values.detail} onChange={formik.handleChange} className="form-control" aria-label="With textarea" />
                 </div>
-                <button type="submit" className="btn btn-success">ADD</button>
+                <button type="submit" className="btn btn-success">Change</button>
             </form>
         </>
     );

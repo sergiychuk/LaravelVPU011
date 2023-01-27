@@ -75,23 +75,15 @@ const HomePage = () => {
     });
   }
 
-  // const editProduct = (values: IUpdateProduct) => {
-  //   // console.log(id);
-  //   http.put("/api/products/", values).then(resp => {
-  //     // console.log(resp);
-
-  //   });
-  // }
-
   const data = list.map((product) => (
     <tr key={product.id}>
       <td>{product.id}</td>
       <td>{product.name}</td>
       <td>{product.detail}</td>
-      <span>
-        <button className="btn btn-warning">Edit</button>
+      <div>
+        <a href={"/edit/" + product.id}><button className="btn btn-warning">Edit</button></a>
         <button onClick={() => deleteProduct(product.id)} className="btn btn-secondary">Delete</button>
-      </span>
+      </div>
     </tr>
   ));
 
