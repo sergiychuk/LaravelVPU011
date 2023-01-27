@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Validator;
 
 /**
  * @OA\Info(
@@ -115,14 +116,31 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @OA\Get(
+     *     tags={"Product"},
+     *     path="/api/products/{id}",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Get product by ID",
+     *         required=true,
+     *      ),
+     *     @OA\Response(response="200", description="List Products.")
+     * )
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::find($id);
+        if (is_null($product)) {
+            return response()->json([
+                "success" => false
+            ], 404);
+        }
+        return response()->json([
+            "success" => true,
+            "message" => "Product retrieved successfully.",
+            "data" => $product
+        ]);
     }
 
     /**
@@ -143,7 +161,7 @@ class ProductController extends Controller
      *
      * @OA\RequestBody(
      *    required=true,
-     *    description="Create product info",
+     *    description="Update product info",
      *    @OA\JsonContent(
      *       required={"id","name","detail"},
      *       @OA\Property(property="id", type="integer"),
@@ -209,7 +227,7 @@ class ProductController extends Controller
      *  @OA\Parameter(
      *      name="id",
      *      in="path",
-     *      description="Buscar por estado",
+     *      description="Product ID",
      *      required=true,
      *   ),
      *   @OA\Response(

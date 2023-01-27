@@ -49,7 +49,7 @@
                 ],
                 "operationId": "fc0eee8e1623ba7c45c1cf287c490ce5",
                 "requestBody": {
-                    "description": "Create product info",
+                    "description": "Update product info",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -141,6 +141,25 @@
             }
         },
         "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "operationId": "47affec446a4e21ba3cbf0b6b14abb44",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Get product by ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List Products."
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Product"
@@ -150,7 +169,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Buscar por estado",
+                        "description": "Product ID",
                         "required": true
                     }
                 ],
